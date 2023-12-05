@@ -133,19 +133,19 @@ function TableStats() {
                             </TableRow>
                         ))}
                     </TableBody>
-                    {/* Per spostare la paginazione a sinistra sostituire right-0 con left-0 */}
-                    <TableFoot className="absolute bottom-0 right-0 border-none">
-                        <TableFooterCell className="flex justify-items-end">
-                            <button onClick={() => paginationDown()}>
-                                <ChevronLeftIcon className="h-4 w-4" />
-                            </button>
-                            <p className="text-sm">{pageCounter}</p>
-                            <button onClick={() => paginationUp()}>
-                                <ChevronRightIcon className="h-4 w-4" />
-                            </button>
-                        </TableFooterCell>
-                    </TableFoot>
                 </Table>
+                {/* Per spostare la paginazione a sinistra sostituire right-0 con left-0 */}
+                <div className="absolute bottom-0 right-0 border-none p-3">
+                    <div className="flex justify-items-end">
+                        <button onClick={() => paginationDown()}>
+                            <ChevronLeftIcon className="h-4 w-4" />
+                        </button>
+                        <p className="text-sm">{pageCounter}</p>
+                        <button onClick={() => paginationUp()}>
+                            <ChevronRightIcon className="h-4 w-4" />
+                        </button>
+                    </div>
+                </div>
             </div>
         </Card>
     );

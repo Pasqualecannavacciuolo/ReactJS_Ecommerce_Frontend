@@ -11,16 +11,14 @@ import {
     Table,
     TableBody,
     TableCell,
-    TableFoot,
-    TableFooterCell,
     TableHead,
     TableHeaderCell,
     TableRow,
     Text,
 } from "@tremor/react";
-import { useEffect, useState } from "react";
+import { ForwardRefExoticComponent, RefAttributes, SVGProps, useEffect, useState } from "react";
 
-const data = [
+const data: TableItem[] = [
     {
         codice: "SKU001",
         data: "01-01-2023",
@@ -63,7 +61,7 @@ const data = [
     },
 ];
 
-const data2 = [
+const data2: TableItem[] = [
     {
         codice: "SKU001",
         data: "01-01-2023",
@@ -82,14 +80,25 @@ const data2 = [
     },
 ];
 
+interface TableItem {
+    codice: string,
+    data: string,
+    importo: number,
+    status: string,
+    color: string
+    icon: ForwardRefExoticComponent<Omit<SVGProps<SVGSVGElement>, "ref"> & { title?: string | undefined; titleId?: string | undefined; } & RefAttributes<SVGSVGElement>>,
+}
+
 function TableStats() {
     const [pageCounter, setPageCounter] = useState(1);
-    const [pageData, setPageData] = useState([{}]);
+    const [pageData, setPageData] = useState<TableItem[]>([]);
 
+    // All'avvio inizializzo i dati
     useEffect(() => {
         setPageData(data);
     }, []);
 
+    // Funzione che controlla l'incremento della paginazione
     const paginationUp = () => {
         if (pageCounter == 2) {
             return;
@@ -97,6 +106,8 @@ function TableStats() {
         setPageCounter(pageCounter + 1);
         setPageData(data2);
     }
+
+    // Funzione che controlla il decremento della paginazione
     const paginationDown = () => {
         if (pageCounter == 1) {
             return;

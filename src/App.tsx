@@ -1,4 +1,5 @@
 import { useState } from "react";
+import logo from "./assets/logo.svg";
 import { Link, Outlet } from "react-router-dom";
 import {
   Bars3Icon,
@@ -37,7 +38,8 @@ function App() {
         aria-label="Sidebar">
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
           <Link to={'/'} className="flex items-center ps-2.5 mb-5">
-            <img src="https://flowbite.com/docs/images/logo.svg" className="h-6 me-3 sm:h-7" alt="Flowbite Logo" />
+
+            <img src={logo} className="h-6 me-3 sm:h-7" alt="Flowbite Logo" />
             <span className="self-center text-md font-semibold whitespace-nowrap dark:text-white xl:text-xl">E-commerce CMS</span>
           </Link>
           {/* VOCI SIDEBAR */}

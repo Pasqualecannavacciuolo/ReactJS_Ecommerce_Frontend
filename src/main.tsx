@@ -7,6 +7,7 @@ import {
 import App from './App.tsx'
 import './index.css'
 import Home from './components/home/Home.tsx';
+import Utenti from './components/utenti/Utenti.tsx';
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,11 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />
-      }
+      },
+      {
+        path: "/utenti",
+        element: <Utenti />
+      },
     ]
   },
 ]);

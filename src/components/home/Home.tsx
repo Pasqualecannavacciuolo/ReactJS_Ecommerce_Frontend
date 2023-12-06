@@ -1,7 +1,7 @@
-import CardStats from "./CardStats";
+import CardStats from "../reusable/CardStats";
 import { UsersIcon, ArchiveBoxIcon, CurrencyEuroIcon } from "@heroicons/react/24/outline";
-import ChartStats from "./ChartStats";
-import TableStats from "./TableStats";
+import ChartStats from "../reusable/ChartStats";
+import TableStats from "../reusable/TableStats";
 function Home() {
     return (
         <>

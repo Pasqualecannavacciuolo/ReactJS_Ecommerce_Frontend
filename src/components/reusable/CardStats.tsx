@@ -1,5 +1,5 @@
 import { ReactNode } from "react"
-import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card"
+import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
 
 function CardStats({ title, subtitle, value, description, icon }: { title: string, subtitle: string, value: number, description: string, icon: ReactNode }) {
     return (

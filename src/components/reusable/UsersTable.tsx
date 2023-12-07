@@ -4,7 +4,7 @@ import {
     EyeIcon,
     PencilSquareIcon,
     TrashIcon
-} from "@heroicons/react/24/outline";
+} from "@heroicons/react/20/solid";
 import {
     Card,
     Table,
@@ -145,7 +145,7 @@ function UsersTable() {
 
     // Implemento la ricerca
     const [searchQuery, setSearchQuery] = useState("");
-    const filteredData = data.filter((item) =>
+    const filteredData = pageData.filter((item) =>
         item.id.includes(searchQuery) ||
         item.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.cognome.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -214,14 +214,14 @@ function UsersTable() {
                                     <TableCell className="text-primary">{item.eta}</TableCell>
                                     <TableCell className="text-primary">{item.email}</TableCell>
                                     <TableCell className="text-primary flex gap-1">
-                                        <a href="#visualizza">
-                                            <EyeIcon className="h-6 w-6" />
+                                        <a href="#visualizza" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                                            <EyeIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                                         </a>
-                                        <a href="#modifica">
-                                            <PencilSquareIcon className="h-6 w-6" />
+                                        <a href="#modifica" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                                            <PencilSquareIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                                         </a>
-                                        <a href="#cancella">
-                                            <TrashIcon className="h-6 w-6" />
+                                        <a href="#cancella" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                                            <TrashIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                                         </a>
                                     </TableCell>
                                 </TableRow>

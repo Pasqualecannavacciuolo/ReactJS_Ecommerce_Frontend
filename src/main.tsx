@@ -8,11 +8,13 @@ import App from './App.tsx'
 import './index.css'
 import Home from './components/home/Home.tsx';
 import Utenti from './components/utenti/Utenti.tsx';
+import NotFound from './NotFound.tsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <NotFound />,
     children: [
       {
         path: "/",

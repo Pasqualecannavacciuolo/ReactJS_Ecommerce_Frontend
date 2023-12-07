@@ -19,16 +19,23 @@ import { CardDescription } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 interface TableItem {
-    id: string,
-    nome: string
-    cognome: string
-    eta: number
-    email: string
+    id: number,
+    firstname: string,
+    lastname: string,
+    age: number,
+    gender: string,
+    email: string,
+    phone: string,
+    username: string,
+    password: string,
+    birthDate: string,
+    image: string,
 }
 
-const data: TableItem[] = [
+/*const data: TableItem[] = [
     {
         id: "001",
         nome: "Pasquale",
@@ -115,44 +122,76 @@ const data2: TableItem[] = [
         eta: 56,
         email: "j.stat@email.com"
     },
-];
+];*/
 
 function UsersTable() {
-
+    // TODO => Da aggiornare con la response del backend al route 'users/count'
+    // Variabili che servono a far funzionare la tabella
+    const elementsInEachPage: number = 7;
     const [pageCounter, setPageCounter] = useState(1);
+    // Variabili che prendono dati dal Database
     const [pageData, setPageData] = useState<TableItem[]>([]);
+    const [allDataFromUsers, setAllDataFromUsers] = useState<TableItem[]>([]);
+    // Variabili per effettuare la ricerca globale
+    const [searchQuery, setSearchQuery] = useState("");
+    const [filteredAllData, setFilteredAllData] = useState<TableItem[]>([]);
+    const [totalRecords, setTotalRecords] = useState(0);
 
-    // All'avvio inizializzo i dati
     useEffect(() => {
-        setPageData(data);
-    }, []);
+        // Ottengo il numero totale dei record presenti nella tabella
+        axios.get(`http://localhost:8080/users/count`).then((res) => {
+            if (res.status === 422) return;
+            setTotalRecords(parseInt(res.data.count));
+        });
+        // Ottengo i dati da visualizzare nella prima pagina della tabella
+        axios.get(`http://localhost:8080/users/elementi?pagina=${pageCounter}`).then((res) => {
+            setPageData(res.data);
+        });
+        // Ottengo i dati per effettuare la ricerca globale
+        axios.get(`http://localhost:8080/users`).then((res) => {
+            if (res.status === 422) return;
+            setAllDataFromUsers(res.data);
+        });
+    }, [totalRecords, pageCounter]);
 
-    // Funzione che controlla l'incremento della paginazione
+    // Controllo la paginazione in avanti
     const paginationUp = () => {
-        if (pageCounter == 2) {
-            return;
+        const tmpCounter = pageCounter + 1;
+        const maxPages = Math.round(totalRecords / elementsInEachPage);
+        if (tmpCounter <= maxPages) {
+            axios.get(`http://localhost:8080/users/elementi?pagina=${tmpCounter}`).then((res) => {
+                if (res.status === 422) return;
+                setPageCounter(pageCounter + 1);
+                setPageData(res.data);
+            });
         }
-        setPageCounter(pageCounter + 1);
-        setPageData(data2);
-    }
+    };
 
-    // Funzione che controlla il decremento della paginazione
+    // Controllo la paginazione a ritroso
     const paginationDown = () => {
-        if (pageCounter == 1) {
-            return;
-        }
+        if (pageCounter === 1) return;
         setPageCounter(pageCounter - 1);
-        setPageData(data);
-    }
+        axios.get(`http://localhost:8080/users/elementi?pagina=${pageCounter}`).then((res) => {
+            setPageData(res.data);
+        });
+    };
 
     // Implemento la ricerca
-    const [searchQuery, setSearchQuery] = useState("");
-    const filteredData = pageData.filter((item) =>
-        item.id.includes(searchQuery) ||
-        item.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.cognome.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const handleSearch = (query: string) => {
+        setSearchQuery(query);
+        const filteredAllData = allDataFromUsers.filter((item) =>
+            // Effettuo la ricerca su questi campi
+            item.id.toString().includes(query.toLowerCase()) ||
+            item.firstname.toLowerCase().includes(query.toLowerCase()) ||
+            item.lastname.toLowerCase().includes(query.toLowerCase()) ||
+            item.email.toLowerCase().includes(query.toLowerCase())
+        );
+        // Restituisco il risultato della ricerca
+        setFilteredAllData(filteredAllData);
+    };
+
+    // Gestisco i dati da visualizzare in base alla query di ricerca
+    const dataToRender = searchQuery ? filteredAllData : pageData;
 
     return (
         <Card className="h-full flex flex-col relative">
@@ -171,7 +210,7 @@ function UsersTable() {
                         type="text"
                         placeholder="Cerca..."
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={(e) => handleSearch(e.target.value)}
                     />
                 </div>
             </div>
@@ -188,49 +227,26 @@ function UsersTable() {
                         </TableRow>
                     </TableHead>
                     <TableBody className="pb-10">
-                        {filteredData.length == 0 ?
-                            /* CASO IN CUI NON E' STATO SCRITTO QUALCOSA NELLA BARRA DI RICERCA */
-                            pageData.map((item) => (
-                                <TableRow key={item.id}>
-                                    <TableCell className="text-primary">{item.id}</TableCell>
-                                    <TableCell className="text-primary">{item.nome}</TableCell>
-                                    <TableCell className="text-primary">{item.cognome}</TableCell>
-                                    <TableCell className="text-primary">{item.eta}</TableCell>
-                                    <TableCell className="text-primary">{item.email}</TableCell>
-                                    <TableCell className="text-primary flex gap-1">
-                                        <a href="#visualizza">
-                                            <EyeIcon className="h-6 w-6" />
-                                        </a>
-                                        <a href="#modifica">
-                                            <PencilSquareIcon className="h-6 w-6" />
-                                        </a>
-                                        <a href="#cancella">
-                                            <TrashIcon className="h-6 w-6" />
-                                        </a>
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                            /* CASO IN CUI E' STATO SCRITTO QUALCOSA NELLA BARRA DI RICERCA */
-                            : filteredData.map((item) => (
-                                <TableRow key={item.id}>
-                                    <TableCell className="text-primary">{item.id}</TableCell>
-                                    <TableCell className="text-primary">{item.nome}</TableCell>
-                                    <TableCell className="text-primary">{item.cognome}</TableCell>
-                                    <TableCell className="text-primary">{item.eta}</TableCell>
-                                    <TableCell className="text-primary">{item.email}</TableCell>
-                                    <TableCell className="text-primary flex gap-1">
-                                        <a href="#visualizza" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-                                            <EyeIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                                        </a>
-                                        <a href="#modifica" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-                                            <PencilSquareIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                                        </a>
-                                        <a href="#cancella" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-                                            <TrashIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                                        </a>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                        {dataToRender.map((item) => (
+                            <TableRow key={item.id}>
+                                <TableCell className="text-primary">{item.id}</TableCell>
+                                <TableCell className="text-primary">{item.firstname}</TableCell>
+                                <TableCell className="text-primary">{item.lastname}</TableCell>
+                                <TableCell className="text-primary">{item.age}</TableCell>
+                                <TableCell className="text-primary">{item.email}</TableCell>
+                                <TableCell className="text-primary flex gap-1">
+                                    <a href="#visualizza" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                                        <EyeIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                                    </a>
+                                    <a href="#modifica" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                                        <PencilSquareIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                                    </a>
+                                    <a href="#cancella" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                                        <TrashIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                                    </a>
+                                </TableCell>
+                            </TableRow>
+                        ))}
                     </TableBody>
                 </Table>
                 {/* Per spostare la paginazione a sinistra sostituire right-0 con left-0 */}

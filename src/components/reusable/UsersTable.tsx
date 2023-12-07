@@ -3,7 +3,7 @@ import {
     ChevronRightIcon,
     EyeIcon,
     PencilSquareIcon,
-    TrashIcon
+    TrashIcon,
 } from "@heroicons/react/20/solid";
 import {
     Card,
@@ -17,6 +17,8 @@ import {
 import { useEffect, useState } from "react";
 import { CardDescription } from "../ui/card";
 import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { Link } from "react-router-dom";
 
 interface TableItem {
     id: string,
@@ -159,16 +161,19 @@ function UsersTable() {
                     <h1 className="font-semibold text-xl">Utenti totali</h1>
                     <CardDescription>Tabella che mostra tutti gli utenti registrati</CardDescription>
                 </div>
-                <Input
-                    className="flex justify-end w-1/3 ring-gray-300 placeholder:text-slate-400 focus:outline-none focus:border-slate-300 focus:ring-1 focus:ring-slate-300
+                <div className="flex w-1/3 gap-1">
+                    <Link to={"/creaUtente"}><Button className="bg-primary">Crea utente</Button></Link>
+                    <Input
+                        className="flex justify-end ring-gray-300 placeholder:text-slate-400 focus:outline-none focus:border-slate-300 focus:ring-1 focus:ring-slate-300
                     disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
                     invalid:border-pink-500 invalid:text-pink-600
                     focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
-                    type="text"
-                    placeholder="Cerca..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                />
+                        type="text"
+                        placeholder="Cerca..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                </div>
             </div>
             <div className="flex-1 overflow-y-auto">
                 <Table className="mt-5">

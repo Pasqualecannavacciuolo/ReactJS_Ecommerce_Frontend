@@ -9,6 +9,7 @@ import './index.css'
 import Home from './components/home/Home.tsx';
 import Utenti from './components/utenti/Utenti.tsx';
 import NotFound from './NotFound.tsx';
+import Utente from './components/utenti/paginaUtente/Utente.tsx';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "/utenti",
         element: <Utenti />
+      },
+      {
+        path: "/utenti/:userId",
+        element: <Utente />
       },
     ]
   },

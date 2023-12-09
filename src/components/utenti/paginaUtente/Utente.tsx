@@ -1,3 +1,12 @@
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableFooter,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
 import TableStats from "@/components/home/TableStats";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -5,6 +14,8 @@ import { Card } from "@/components/ui/card";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
+import { cn } from "@/lib/utils";
+import { CreditCardIcon, DocumentTextIcon, BanknotesIcon } from "@heroicons/react/20/solid";
 
 interface User {
     id: number,
@@ -19,6 +30,52 @@ interface User {
     birthDate: string,
     image: string,
 }
+
+// Dati mockati in attesa di implementarli con il database
+const invoices = [
+    {
+        invoice: "INV001",
+        paymentStatus: "Pagato",
+        totalAmount: "$250.00",
+        paymentMethod: "Credit Card",
+    },
+    {
+        invoice: "INV002",
+        paymentStatus: "In attesa",
+        totalAmount: "$150.00",
+        paymentMethod: "PayPal",
+    },
+    {
+        invoice: "INV003",
+        paymentStatus: "Non pagato",
+        totalAmount: "$350.00",
+        paymentMethod: "Bank Transfer",
+    },
+    {
+        invoice: "INV004",
+        paymentStatus: "Pagato",
+        totalAmount: "$450.00",
+        paymentMethod: "Credit Card",
+    },
+    {
+        invoice: "INV005",
+        paymentStatus: "Pagato",
+        totalAmount: "$550.00",
+        paymentMethod: "PayPal",
+    },
+    {
+        invoice: "INV006",
+        paymentStatus: "In attesa",
+        totalAmount: "$200.00",
+        paymentMethod: "Bank Transfer",
+    },
+    {
+        invoice: "INV007",
+        paymentStatus: "Non pagato",
+        totalAmount: "$300.00",
+        paymentMethod: "Credit Card",
+    },
+]
 
 function Utente() {
     // Ottengo i parametri dal path
@@ -87,6 +144,52 @@ function Utente() {
                 </Card>
                 <TableStats />
             </div>
+            <Card className="flex flex-col h-full p-5">
+                <h1 className="mt-5 mb-5 text-xl font-bold text-primary">Fatture</h1>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="w-[100px]">Codice</TableHead>
+                            <TableHead>Stato</TableHead>
+                            <TableHead>Metodo</TableHead>
+                            <TableHead className="text-right">Totale</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {invoices.map((invoice) => (
+                            <TableRow key={invoice.invoice}>
+                                <TableCell className="flex items-center gap-3 font-medium">
+                                    <DocumentTextIcon className="w-5 h-5" />
+                                    {invoice.invoice}
+                                </TableCell>
+                                <TableCell>
+                                    {/* DEFINISCO IL COLORE PER I VARI BADGE IN BASE ALLO STATO DELLA FATTURA */}
+                                    <Badge className={cn({
+                                        "bg-red-300 text-red-700 text-bold": invoice.paymentStatus.toLowerCase() == "non pagato",
+                                        "bg-emerald-300 text-emerald-700 text-bold": invoice.paymentStatus.toLowerCase() == "pagato",
+                                        "bg-amber-300 text-amber-700 text-bold": invoice.paymentStatus.toLowerCase() == "in attesa"
+                                    })}>
+                                        {invoice.paymentStatus}
+                                    </Badge>
+                                </TableCell>
+                                <TableCell className="flex items-center gap-3">
+                                    {invoice.paymentMethod.toLowerCase() === "credit card" && <CreditCardIcon className="w-5 h-5" />}
+                                    {invoice.paymentMethod.toLowerCase() === "paypal" && <CreditCardIcon className="w-5 h-5" />}
+                                    {invoice.paymentMethod.toLowerCase() === "bank transfer" && <BanknotesIcon className="w-5 h-5" />}
+                                    {invoice.paymentMethod}
+                                </TableCell>
+                                <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <TableCell colSpan={3}>Totale</TableCell>
+                            <TableCell className="text-right">$2,500.00</TableCell>
+                        </TableRow>
+                    </TableFooter>
+                </Table>
+            </Card>
         </>
     )
 }

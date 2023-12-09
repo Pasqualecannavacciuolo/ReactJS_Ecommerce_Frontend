@@ -1,4 +1,5 @@
 import TableStats from "@/components/home/TableStats";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -41,11 +42,11 @@ function Utente() {
                 <Card className="flex h-full p-5">
                     <div>
                         <div className="px-4 sm:px-0">
-                            <h1 className="font-semibold text-xl">Informazioni dettagliate</h1>
+                            <h3 className="text-base font-semibold leading-7 text-primary">Informazioni utente</h3>
                         </div>
                         <div className="mt-6">
                             <dl className="divide-y divide-gray-100">
-                                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <div className="py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                     <dt className="text-sm font-bold leading-6 text-primary">Nome</dt>
                                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{user?.firstname}</dd>
                                 </div>
@@ -70,6 +71,9 @@ function Utente() {
                                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{user?.age}</dd>
                                 </div>
                             </dl>
+                            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <Button className="bg-primary">Modifica</Button>
+                            </div>
                         </div>
                     </div>
 

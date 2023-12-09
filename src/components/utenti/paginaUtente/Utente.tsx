@@ -36,43 +36,43 @@ const invoices = [
     {
         invoice: "INV001",
         paymentStatus: "Pagato",
-        totalAmount: "$250.00",
+        totalAmount: "€250.00",
         paymentMethod: "Credit Card",
     },
     {
         invoice: "INV002",
         paymentStatus: "In attesa",
-        totalAmount: "$150.00",
+        totalAmount: "€150.00",
         paymentMethod: "PayPal",
     },
     {
         invoice: "INV003",
         paymentStatus: "Non pagato",
-        totalAmount: "$350.00",
+        totalAmount: "€350.00",
         paymentMethod: "Bank Transfer",
     },
     {
         invoice: "INV004",
         paymentStatus: "Pagato",
-        totalAmount: "$450.00",
+        totalAmount: "€450.00",
         paymentMethod: "Credit Card",
     },
     {
         invoice: "INV005",
         paymentStatus: "Pagato",
-        totalAmount: "$550.00",
+        totalAmount: "€550.00",
         paymentMethod: "PayPal",
     },
     {
         invoice: "INV006",
         paymentStatus: "In attesa",
-        totalAmount: "$200.00",
+        totalAmount: "€200.00",
         paymentMethod: "Bank Transfer",
     },
     {
         invoice: "INV007",
         paymentStatus: "Non pagato",
-        totalAmount: "$300.00",
+        totalAmount: "€300.00",
         paymentMethod: "Credit Card",
     },
 ]
@@ -87,7 +87,7 @@ function Utente() {
 
     // All'inizializzazione del componente ottengo l'utente dal Database
     useEffect(() => {
-        axios.get<User>(`http://localhost:8080/users/${id}`).then(res => {
+        axios.get<User>(`http://localhost:8080/users/€{id}`).then(res => {
             setUser(res.data);
         });
     }, [id]);
@@ -185,7 +185,7 @@ function Utente() {
                     <TableFooter>
                         <TableRow>
                             <TableCell colSpan={3}>Totale</TableCell>
-                            <TableCell className="text-right">$2,500.00</TableCell>
+                            <TableCell className="text-right">€2,500.00</TableCell>
                         </TableRow>
                     </TableFooter>
                 </Table>

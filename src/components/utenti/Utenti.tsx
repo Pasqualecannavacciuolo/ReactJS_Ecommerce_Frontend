@@ -1,4 +1,4 @@
-import UsersTable from "../reusable/UsersTable"
+import UsersTable from "./UsersTable"
 
 function Utenti() {
     return (

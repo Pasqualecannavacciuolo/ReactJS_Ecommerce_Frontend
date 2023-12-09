@@ -35,7 +35,6 @@ interface TableItem {
     image: string,
 }
 
-
 function UsersTable() {
     // TODO => Da aggiornare con la response del backend al route 'users/count'
     // Variabili che servono a far funzionare la tabella

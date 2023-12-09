@@ -1,4 +1,5 @@
 import TableStats from "@/components/home/TableStats";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import axios from "axios";
@@ -43,8 +44,14 @@ function Utente() {
                     <div>
                         <div className="px-4 sm:px-0">
                             <h3 className="text-base font-semibold leading-7 text-primary">Informazioni utente</h3>
+                            {/* TODO => OTTENERE QUESTI TAG DAL BACKEND */}
+                            <div className="flex gap-1 mt-3">
+                                <Badge className="bg-emerald-200 text-emerald-600 hover:bg-emerald-200 hover:text-emerald-900">Ottimo acquirente</Badge>
+                                <Badge className="bg-emerald-200 text-emerald-600 hover:bg-emerald-200 hover:text-emerald-900">Acquisti ricorrenti</Badge>
+                                <Badge className="bg-slate-200 text-slate-600 hover:bg-slate-200 hover:text-slate-900">Nuovo utente</Badge>
+                            </div>
                         </div>
-                        <div className="mt-6">
+                        <div className="mt-1">
                             <dl className="divide-y divide-gray-100">
                                 <div className="py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                     <dt className="text-sm font-bold leading-6 text-primary">Nome</dt>

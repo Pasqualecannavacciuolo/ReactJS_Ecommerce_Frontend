@@ -87,7 +87,7 @@ function Utente() {
 
     // All'inizializzazione del componente ottengo l'utente dal Database
     useEffect(() => {
-        axios.get<User>(`http://localhost:8080/users/€{id}`).then(res => {
+        axios.get<User>(`http://localhost:8080/users/${id}`).then(res => {
             setUser(res.data);
         });
     }, [id]);

@@ -146,9 +146,9 @@ function UsersTable() {
                                 <TableCell className="text-primary">{item.age}</TableCell>
                                 <TableCell className="text-primary">{item.email}</TableCell>
                                 <TableCell className="text-primary flex gap-1">
-                                    <a href="#visualizza" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                                    <Link to={"/utenti/" + item.id} className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                                         <EyeIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                                    </a>
+                                    </Link>
                                     <a href="#modifica" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                                         <PencilSquareIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                                     </a>

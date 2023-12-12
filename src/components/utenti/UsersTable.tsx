@@ -18,6 +18,17 @@ import { useEffect, useState } from "react";
 import { CardDescription } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast"
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -37,6 +48,7 @@ interface TableItem {
 
 function UsersTable() {
     // TODO => Da aggiornare con la response del backend al route 'users/count'
+    const { toast } = useToast();
     // Variabili che servono a far funzionare la tabella
     const elementsInEachPage: number = 7;
     const [pageCounter, setPageCounter] = useState(1);
@@ -48,6 +60,24 @@ function UsersTable() {
     const [filteredAllData, setFilteredAllData] = useState<TableItem[]>([]);
     const [totalRecords, setTotalRecords] = useState(0);
 
+    // Funzione che mi serve per effettuare nuovamente il fetch dal database con i dati aggiornati
+    const setup = () => {
+        // Ottengo il numero totale dei record presenti nella tabella
+        axios.get(`http://localhost:8080/users/count`).then((res) => {
+            if (res.status === 422) return;
+            setTotalRecords(parseInt(res.data.count));
+        });
+        // Ottengo i dati da visualizzare nella prima pagina della tabella
+        axios.get(`http://localhost:8080/users/elementi?pagina=${pageCounter}`).then((res) => {
+            setPageData(res.data);
+        });
+        // Ottengo i dati per effettuare la ricerca globale
+        axios.get(`http://localhost:8080/users`).then((res) => {
+            if (res.status === 422) return;
+            setAllDataFromUsers(res.data);
+        });
+    }
+    // Inizializzazione e fetch dei dati
     useEffect(() => {
         // Ottengo il numero totale dei record presenti nella tabella
         axios.get(`http://localhost:8080/users/count`).then((res) => {
@@ -104,6 +134,26 @@ function UsersTable() {
     // Gestisco i dati da visualizzare in base alla query di ricerca
     const dataToRender = searchQuery ? filteredAllData : pageData;
 
+    // Gestisco la cancellazione di un utente
+    const handleUserDelete = async (id: number) => {
+        // Cancello dal database
+        try {
+            await axios.delete(`http://localhost:8080/users/${id}`).then(res => {
+                toast({
+                    title: "✅ " + res.statusText,
+                    description: res.data,
+                });
+            });
+            // Effettuo nuovamente il fetch dal Database con i dati aggiornati
+            setup();
+        } catch (error) {
+            toast({
+                title: "Non ho potuto completare la richiesta",
+                description: "Problema al database o al server",
+            });
+        }
+    }
+
     return (
         <Card className="h-full flex flex-col relative">
             <div className="flex">
@@ -146,15 +196,38 @@ function UsersTable() {
                                 <TableCell className="text-primary">{item.age}</TableCell>
                                 <TableCell className="text-primary">{item.email}</TableCell>
                                 <TableCell className="text-primary flex gap-1">
-                                    <Link to={"/utenti/" + item.id} className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                                    <Link
+                                        to={"/utenti/" + item.id}
+                                        className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                                         <EyeIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                                     </Link>
                                     <a href="#modifica" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                                         <PencilSquareIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                                     </a>
-                                    <a href="#cancella" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-                                        <TrashIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                                    </a>
+                                    <Dialog >
+                                        <DialogTrigger className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                                            <TrashIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <DialogHeader>
+                                                <DialogTitle>Sei sicuro di voler eliminare l'utente {item.email}</DialogTitle>
+                                                <DialogDescription>
+                                                    Questa azione non e' reversibile. I dati verranno cancellati permanentemente dai server.
+                                                </DialogDescription>
+                                            </DialogHeader>
+                                            <DialogFooter className="sm:justify-start">
+                                                <DialogClose asChild>
+                                                    <Button
+                                                        onClick={() => handleUserDelete(item.id)}
+                                                        type="button"
+                                                        variant={"default"}
+                                                    >
+                                                        Elimina
+                                                    </Button>
+                                                </DialogClose>
+                                            </DialogFooter>
+                                        </DialogContent>
+                                    </Dialog>
                                 </TableCell>
                             </TableRow>
                         ))}

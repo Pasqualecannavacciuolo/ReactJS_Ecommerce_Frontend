@@ -11,6 +11,7 @@ import Home from './components/home/Home.tsx';
 import Utenti from './components/utenti/Utenti.tsx';
 import NotFound from './NotFound.tsx';
 import Utente from './components/utenti/paginaUtente/Utente.tsx';
+import CreaUtente from './components/utenti/paginaUtente/CreaUtente.tsx';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/utenti/:userId",
         element: <Utente />
+      },
+      {
+        path: "/utenti/crea",
+        element: <CreaUtente />
       },
     ]
   },

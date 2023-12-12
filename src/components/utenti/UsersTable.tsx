@@ -28,7 +28,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -162,7 +162,7 @@ function UsersTable() {
                     <CardDescription>Tabella che mostra tutti gli utenti registrati</CardDescription>
                 </div>
                 <div className="flex w-1/3 gap-1">
-                    <Link to={"/creaUtente"}><Button className="bg-primary">Crea utente</Button></Link>
+                    <Link to={"/utenti/crea"}><Button className="bg-primary">Crea utente</Button></Link>
                     <Input
                         className="flex justify-end ring-gray-300 placeholder:text-slate-400 focus:outline-none focus:border-slate-300 focus:ring-1 focus:ring-slate-300
                     disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
@@ -201,9 +201,9 @@ function UsersTable() {
                                         className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                                         <EyeIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                                     </Link>
-                                    <a href="#modifica" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                                    <Link to={'/utenti/crea'} className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                                         <PencilSquareIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                                    </a>
+                                    </Link>
                                     <Dialog >
                                         <DialogTrigger className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                                             <TrashIcon className="flex-shrink-0 w-5 h-5 text-gray-700 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
